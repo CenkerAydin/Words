@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.runtime.livedata)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -62,4 +63,14 @@ dependencies {
     //Hilt
     implementation (libs.hilt.android)
     kapt(libs.hilt.android.compiler)
+
+    //Room
+    implementation (libs.androidx.room.runtime)
+    kapt (libs.androidx.room.compiler)
+    implementation (libs.androidx.room.ktx)
+    implementation (libs.androidx.hilt.lifecycle.viewmodel)
+
+    implementation (libs.androidx.lifecycle.livedata.ktx) // Jetpack Lifecycle livedata ktx
+
+
 }
