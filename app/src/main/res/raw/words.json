@@ -1,0 +1,106 @@
+{
+  "words": [
+    {
+      "englishWord": "apple", "turkishWord": "elma"},
+    {
+      "englishWord": "book", "turkishWord": "kitap"},
+    {
+      "englishWord": "car", "turkishWord": "araba"},
+    {
+      "englishWord": "house", "turkishWord": "ev"},
+    {
+      "englishWord": "water", "turkishWord": "su"},
+    {
+      "englishWord": "tree", "turkishWord": "ağaç"},
+    {
+      "englishWord": "sun", "turkishWord": "güneş"},
+    {
+      "englishWord": "moon", "turkishWord": "ay"},
+    {
+      "englishWord": "star", "turkishWord": "yıldız"},
+    {
+      "englishWord": "school", "turkishWord": "okul"},
+    {
+      "englishWord": "teacher", "turkishWord": "öğretmen"},
+    {
+      "englishWord": "student", "turkishWord": "öğrenci"},
+    {
+      "englishWord": "cat", "turkishWord": "kedi"},
+    {
+      "englishWord": "dog", "turkishWord": "köpek"},
+    {
+      "englishWord": "bird", "turkishWord": "kuş"},
+    {
+      "englishWord": "fish", "turkishWord": "balık"},
+    {
+      "englishWord": "bread", "turkishWord": "ekmek"},
+    {
+      "englishWord": "milk", "turkishWord": "süt"},
+    {
+      "englishWord": "cheese", "turkishWord": "peynir"},
+    {
+      "englishWord": "egg", "turkishWord": "yumurta"},
+    {
+      "englishWord": "meat", "turkishWord": "et"},
+    {
+      "englishWord": "vegetable", "turkishWord": "sebze"},
+    {
+      "englishWord": "fruit", "turkishWord": "meyve"},
+    {
+      "englishWord": "phone", "turkishWord": "telefon"},
+    {
+      "englishWord": "computer", "turkishWord": "bilgisayar"},
+    {
+      "englishWord": "table", "turkishWord": "masa"},
+    {
+      "englishWord": "chair", "turkishWord": "sandalye"},
+    {
+      "englishWord": "window", "turkishWord": "pencere"},
+    {
+      "englishWord": "door", "turkishWord": "kapı"},
+    {
+      "englishWord": "bookstore", "turkishWord": "kitapçı"},
+    {
+      "englishWord": "restaurant", "turkishWord": "restoran"},
+    {
+      "englishWord": "bus", "turkishWord": "otobüs"},
+    {
+      "englishWord": "train", "turkishWord": "tren"},
+    {
+      "englishWord": "airport", "turkishWord": "havaalanı"},
+    {
+      "englishWord": "hospital", "turkishWord": "hastane"},
+    {
+      "englishWord": "doctor", "turkishWord": "doktor"},
+    {
+      "englishWord": "nurse", "turkishWord": "hemşire"},
+    {
+      "englishWord": "police", "turkishWord": "polis"},
+    {
+      "englishWord": "fire", "turkishWord": "yangın"},
+    {
+      "englishWord": "road", "turkishWord": "yol"},
+    {
+      "englishWord": "mountain", "turkishWord": "dağ"},
+    {
+      "englishWord": "river", "turkishWord": "nehir"},
+    {
+      "englishWord": "lake", "turkishWord": "göl"},
+    {
+      "englishWord": "ocean", "turkishWord": "okyanus"},
+    {
+      "englishWord": "city", "turkishWord": "şehir"},
+    {
+      "englishWord": "village", "turkishWord": "köy"},
+    {
+      "englishWord": "country", "turkishWord": "ülke"},
+    {
+      "englishWord": "family", "turkishWord": "aile"},
+    {
+      "englishWord": "friend", "turkishWord": "arkadaş"},
+    {
+      "englishWord": "love", "turkishWord": "aşk"},
+    {
+      "englishWord": "happiness", "turkishWord": "mutluluk"}
+  ]
+}
