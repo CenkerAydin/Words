@@ -2,26 +2,35 @@ package com.cenkeraydin.words.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHost
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.cenkeraydin.words.WordViewModel
-import com.cenkeraydin.words.ui.WordListScreen
+import com.cenkeraydin.words.ui.add.AddScreen
+import com.cenkeraydin.words.ui.learned.LearnedScreen
+import com.cenkeraydin.words.ui.profile.ProfileScreen
+import com.cenkeraydin.words.ui.home.WordListScreen
 import com.cenkeraydin.words.ui.login.signin.SignInScreen
 import com.cenkeraydin.words.ui.login.signup.SignUpScreen
 
 
 @Composable
-fun Navigation() {
-    val navController = rememberNavController()
+fun Navigation(navController : NavHostController) {
     val viewModel : WordViewModel = viewModel()
     NavHost(
         navController = navController,
-        startDestination = "signInScreen"
-    ) {
-        composable("wordListScreen") {
+        startDestination = "signInScreen"  ) {
+        composable(BottomNavItem.Home.route) {
             WordListScreen(navController, viewModel)
+        }
+        composable(BottomNavItem.Learned.route) {
+           LearnedScreen(viewModel)
+        }
+        composable(BottomNavItem.Add.route) {
+           AddScreen()
+        }
+        composable(BottomNavItem.Profile.route) {
+            ProfileScreen()
         }
         composable("signInScreen") {
             SignInScreen(navController)
@@ -31,3 +40,4 @@ fun Navigation() {
         }
     }
 }
+
