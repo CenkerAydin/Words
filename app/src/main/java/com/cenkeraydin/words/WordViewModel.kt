@@ -2,6 +2,7 @@ package com.cenkeraydin.words
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cenkeraydin.words.data.model.Word
@@ -23,6 +24,19 @@ class WordViewModel @Inject constructor(
 ) : ViewModel() {
 
     val words: LiveData<List<Word>> = repository.getAllWords().asLiveData()
+    val learnedWords: MutableLiveData<List<Word>> = MutableLiveData(emptyList())
+
+    fun markAsLearned(word: Word) {
+        viewModelScope.launch {
+            learnedWords.value = learnedWords.value?.plus(word) // Öğrenilenler listesine ekle
+            deleteWord(word) // Ana kelimeler listesinden sil
+        }
+    }
+
+    fun markAsUnlearned(word: Word) {
+        learnedWords.value = learnedWords.value?.filter { it != word } // Learned listeden kelimeyi kaldır
+        addWord(word) // Kelimeyi ana kelimeler listesine ekle
+    }
 
     private fun loadWordsFromJson(): String {
         val inputStream = context.resources.openRawResource(R.raw.words)
@@ -63,10 +77,12 @@ class WordViewModel @Inject constructor(
         }
     }
 
-    suspend fun addWord(word: Word) {
-        val existingWord = repository.getWordByEnglish(word.englishWord)
-        if (existingWord == null) {
-            repository.insertWords(listOf(word))
+    fun addWord(word: Word) {
+        viewModelScope.launch {
+            val existingWord = repository.getWordByEnglish(word.englishWord)
+            if (existingWord == null) {
+                repository.insertWords(listOf(word))
+            }
         }
     }
 
