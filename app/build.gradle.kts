@@ -79,6 +79,10 @@ dependencies {
 
     implementation (libs.androidx.material)
 
+    //Lottie
+    implementation (libs.lottie.compose)
+
+
 
 }
 java {
