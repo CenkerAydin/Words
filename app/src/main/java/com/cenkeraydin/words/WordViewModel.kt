@@ -24,20 +24,21 @@ class WordViewModel @Inject constructor(
 ) : ViewModel() {
 
     val words: LiveData<List<Word>> = repository.getAllWords().asLiveData()
-    val learnedWords: MutableLiveData<List<Word>> = MutableLiveData(emptyList())
+    val learnedWords: LiveData<List<Word>> = repository.getLearnedWords().asLiveData()
 
     fun markAsLearned(word: Word) {
         viewModelScope.launch {
-            learnedWords.value = learnedWords.value?.plus(word) // Öğrenilenler listesine ekle
-            deleteWord(word) // Ana kelimeler listesinden sil
+            word.isLearned = true
+            repository.updateWord(word)  // Update word in database
         }
     }
 
     fun markAsUnlearned(word: Word) {
-        learnedWords.value = learnedWords.value?.filter { it != word } // Learned listeden kelimeyi kaldır
-        addWord(word) // Kelimeyi ana kelimeler listesine ekle
+        viewModelScope.launch {
+            word.isLearned = false
+            repository.updateWord(word)  // Update word in database
+        }
     }
-
     private fun loadWordsFromJson(): String {
         val inputStream = context.resources.openRawResource(R.raw.words)
         val reader = InputStreamReader(inputStream)
@@ -57,11 +58,7 @@ class WordViewModel @Inject constructor(
         }
     }
 
-    init {
-        viewModelScope.launch {
-            clearWordsAndReload()
-        }
-    }
+
 
     private suspend fun clearWordsAndReload() {
         repository.deleteAllWords()
