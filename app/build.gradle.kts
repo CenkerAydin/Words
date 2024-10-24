@@ -63,14 +63,26 @@ dependencies {
     //Hilt
     implementation (libs.hilt.android)
     kapt(libs.hilt.android.compiler)
+    kapt (libs.androidx.hilt.compiler)
+
 
     //Room
     implementation (libs.androidx.room.runtime)
     kapt (libs.androidx.room.compiler)
     implementation (libs.androidx.room.ktx)
-    implementation (libs.androidx.hilt.lifecycle.viewmodel)
+    implementation (libs.androidx.lifecycle.livedata.ktx)
 
-    implementation (libs.androidx.lifecycle.livedata.ktx) // Jetpack Lifecycle livedata ktx
+    //Navigation
+    implementation (libs.androidx.navigation.compose)
+
+    implementation (libs.gson) // Gson bağımlılığı
+
+    implementation (libs.androidx.material)
 
 
+}
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
