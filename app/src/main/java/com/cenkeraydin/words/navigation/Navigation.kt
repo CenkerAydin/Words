@@ -27,7 +27,7 @@ fun Navigation(navController : NavHostController) {
            LearnedScreen(viewModel)
         }
         composable(BottomNavItem.Add.route) {
-           AddScreen()
+           AddScreen(viewModel)
         }
         composable(BottomNavItem.Profile.route) {
             ProfileScreen()
