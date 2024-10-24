@@ -24,7 +24,9 @@ object RoomModule {
             context,
             WordDatabase::class.java,
             "word_database"
-        ).build()
+        )
+            .fallbackToDestructiveMigration() // Automatically recreates the database
+            .build()
     }
 
     @Provides

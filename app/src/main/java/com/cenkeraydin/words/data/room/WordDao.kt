@@ -5,19 +5,27 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.cenkeraydin.words.data.model.Word
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface WordDao {
 
-    @Query("SELECT * FROM words ORDER BY englishWord ASC")
+    @Query("SELECT * FROM words WHERE isLearned = 0") // Exclude learned words
     fun getAllWords(): Flow<List<Word>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWords(words: List<Word>)
 
-    @Query("DELETE FROM words") // Kelimelerin kaydedildiği tablo adı
+    @Query("SELECT * FROM words WHERE isLearned = 1")
+    fun getLearnedWords(): Flow<List<Word>>
+
+    @Update
+    suspend fun updateWord(word: Word)
+
+
+    @Query("DELETE FROM words")
     suspend fun deleteAllWords()
 
     @Delete

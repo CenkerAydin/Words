@@ -9,6 +9,12 @@ class WordRepository @Inject constructor(private val wordDao: WordDao) {
 
     fun getAllWords(): Flow<List<Word>> = wordDao.getAllWords()
 
+    fun getLearnedWords(): Flow<List<Word>> = wordDao.getLearnedWords()
+
+    suspend fun updateWord(word: Word) {
+        wordDao.updateWord(word)
+    }
+
     suspend fun insertWords(words: List<Word>) {
         wordDao.insertWords(words)
     }

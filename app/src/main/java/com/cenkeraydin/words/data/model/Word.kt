@@ -8,5 +8,6 @@ import androidx.room.PrimaryKey
 data class Word(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val englishWord: String,
-    val turkishWord: String
+    val turkishWord: String,
+    var isLearned: Boolean = false
 )
