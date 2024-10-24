@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -44,6 +45,8 @@ fun WordListScreen(navHostController: NavHostController, viewModel: WordViewMode
     val wordList by viewModel.words.observeAsState(initial = emptyList())
     var selectedWord by remember { mutableStateOf<Word?>(null) }
     var showDialog by remember { mutableStateOf(false) }
+    var searchQuery by remember { mutableStateOf("") }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -61,10 +64,24 @@ fun WordListScreen(navHostController: NavHostController, viewModel: WordViewMode
             ),
 
         )
+        // Search bar
+        OutlinedTextField(
+            value = searchQuery,
+            onValueChange = { searchQuery = it },
+            label = { Text("Search words") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            singleLine = true
+        )
+        val filteredWordList = wordList.filter {
+            it.englishWord.contains(searchQuery, ignoreCase = true) ||
+                    it.turkishWord.contains(searchQuery, ignoreCase = true)
+        }
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        if (wordList.isEmpty()) {
+        if (filteredWordList.isEmpty()) {
             Text(text = "No words available", modifier = Modifier.align(Alignment.CenterHorizontally))
         } else {
             LazyColumn(
@@ -75,7 +92,7 @@ fun WordListScreen(navHostController: NavHostController, viewModel: WordViewMode
                     end = 16.dp,
                     bottom = 72.dp)
             ) {
-                items(wordList) { word: Word ->
+                items(filteredWordList) { word: Word ->
                     WordItem(word = word) {
                         selectedWord = word
                         showDialog = true
