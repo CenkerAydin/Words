@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.cenkeraydin.words.WordViewModel
 import com.cenkeraydin.words.data.model.Word
+import com.cenkeraydin.words.ui.anim.LottieAnimationView
 
 @Composable
 fun AddScreen(viewModel: WordViewModel) {
@@ -35,6 +36,7 @@ fun AddScreen(viewModel: WordViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        LottieAnimationView()
         OutlinedTextField(
             value = englishWord,
             onValueChange = { englishWord = it },
@@ -55,7 +57,6 @@ fun AddScreen(viewModel: WordViewModel) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Kelimeyi ekle butonu
         Button(
             onClick = {
                 if (englishWord.isNotEmpty() && turkishWord.isNotEmpty()) {
@@ -72,7 +73,6 @@ fun AddScreen(viewModel: WordViewModel) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Kelime eklendiğinde onay mesajı
         if (showConfirmation) {
             Text(
                 text = "Word added successfully!",
