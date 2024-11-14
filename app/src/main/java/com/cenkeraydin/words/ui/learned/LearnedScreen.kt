@@ -24,12 +24,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.cenkeraydin.words.WordViewModel
 import com.cenkeraydin.words.data.model.Word
 import com.cenkeraydin.words.ui.home.WordItem
 
 @Composable
-fun LearnedScreen(viewModel: WordViewModel) {
+fun LearnedScreen(viewModel: WordViewModel = hiltViewModel()) {
     val learnedList by viewModel.learnedWords.observeAsState(initial = emptyList())
 
     var selectedLearnedWord by remember { mutableStateOf<Word?>(null) }

@@ -11,32 +11,37 @@ import com.cenkeraydin.words.ui.learned.LearnedScreen
 import com.cenkeraydin.words.ui.profile.ProfileScreen
 import com.cenkeraydin.words.ui.home.WordListScreen
 import com.cenkeraydin.words.ui.login.signin.SignInScreen
+import com.cenkeraydin.words.ui.login.signin.SignInViewModel
 import com.cenkeraydin.words.ui.login.signup.SignUpScreen
+import com.cenkeraydin.words.ui.login.signup.SignUpViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 
 @Composable
 fun Navigation(navController : NavHostController) {
-    val viewModel : WordViewModel = viewModel()
+    val firebaseAuth = FirebaseAuth.getInstance()
+    val isUserLoggedIn = firebaseAuth.currentUser != null
+
     NavHost(
         navController = navController,
-        startDestination = "signInScreen"  ) {
+        startDestination = if(isUserLoggedIn) "home" else "signUpScreen"  ) {
         composable(BottomNavItem.Home.route) {
-            WordListScreen(navController, viewModel)
+            WordListScreen(navController)
         }
         composable(BottomNavItem.Learned.route) {
-           LearnedScreen(viewModel)
+           LearnedScreen()
         }
         composable(BottomNavItem.Add.route) {
-           AddScreen(viewModel)
+           AddScreen()
         }
         composable(BottomNavItem.Profile.route) {
             ProfileScreen()
         }
         composable("signInScreen") {
-            SignInScreen(navController)
+            SignInScreen(navController,)
         }
         composable("signUpScreen") {
-            SignUpScreen(navController)
+            SignUpScreen(navController )
         }
     }
 }

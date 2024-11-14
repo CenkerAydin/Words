@@ -19,12 +19,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.cenkeraydin.words.WordViewModel
 import com.cenkeraydin.words.data.model.Word
 import com.cenkeraydin.words.ui.anim.LottieAnimationView
 
 @Composable
-fun AddScreen(viewModel: WordViewModel) {
+fun AddScreen(viewModel: WordViewModel = hiltViewModel()) {
     var englishWord by remember { mutableStateOf("") }
     var turkishWord by remember { mutableStateOf("") }
     var showConfirmation by remember { mutableStateOf(false) }
