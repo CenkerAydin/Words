@@ -17,6 +17,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -52,145 +53,149 @@ fun SignInScreen(
     val signInState by viewModel.signInState.observeAsState()
     val errorMessage by viewModel.errorMessage.observeAsState()
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                Brush.verticalGradient(
-                    colors = listOf(
-                        Color(0xFFFF8551),
-                        Color(0xFFFF609A)
-                    )
-                )
-            )
-    ) {
-        Column(
+
+    Scaffold() { innerPadingValues ->
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(0.dp),  // Tüm padding'i sıfırla
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            Color(0xFFFF8551),
+                            Color(0xFFFF609A)
+                        )
+                    )
+                )
         ) {
-
-            // Logo or Image
-            Image(
-                painter = painterResource(id = R.drawable.login_word),
-                contentDescription = "App Logo",
+            Column(
                 modifier = Modifier
-                    .height(150.dp)
-                    .padding(bottom = 24.dp)
-            )
-
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp),
-                shape = RoundedCornerShape(28.dp),
+                    .fillMaxSize()
+                    .padding(innerPadingValues),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
-                Column(
+
+                Image(
+                    painter = painterResource(id = R.drawable.login_word),
+                    contentDescription = "App Logo",
+                    modifier = Modifier
+                        .size(150.dp)
+                        .padding(bottom = 24.dp)
+                )
+
+                Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
+                        .padding(innerPadingValues),
+                    shape = RoundedCornerShape(28.dp),
                 ) {
-                    Text(
-                        text = "Welcome Back!",
-                        fontSize = 32.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-
-                    Text(
-                        text = "Please login with your information",
-                        fontSize = 16.sp,
-                        modifier = Modifier.padding(bottom = 16.dp)
-                    )
-
-                    Text(
-                        text = "Email Address",
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-                    OutlinedTextField(
-                        value = email,
-                        onValueChange = { email = it },
-                        label = { Text("Enter your email address") },
-                        leadingIcon = {
-                            Image(
-                                painter = painterResource(id = R.drawable.mail),
-                                modifier = Modifier.size(24.dp),
-                                contentDescription = "Email Icon"
-                            )
-                        },
+                    Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(bottom = 16.dp)
-                    )
-
-                    Text(
-                        text = "Password",
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-                    OutlinedTextField(
-                        value = password,
-                        label = { Text("Enter your password") },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 16.dp),
-                        visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                        onValueChange = { password = it },
-                        leadingIcon = {
-                            Image(
-                                painter = painterResource(id = R.drawable.password),
-                                modifier = Modifier.size(24.dp),
-                                contentDescription = "Email Icon"
-                            )
-                        },
-                        trailingIcon = {
-                            val icon =
-                                if (isPasswordVisible) R.drawable.baseline_visibility_on else R.drawable.baseline_visibility_off
-                            IconButton(
-                                onClick = { isPasswordVisible = !isPasswordVisible }
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = icon),
-                                    contentDescription = "Visibility Icon"
-                                )
-                            }
-                        },
-                    )
-
-                    Button(
-                        onClick = { viewModel.signIn(email, password) },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(50.dp)
-                            .padding(top = 8.dp),
-                        shape = RoundedCornerShape(25.dp)
+                            .padding(16.dp)
                     ) {
-                        Text(text = "Login", fontSize = 16.sp)
-                    }
-                    errorMessage?.let { error ->
                         Text(
-                            text = error,
-                            color = Color.Red,
-                            modifier = Modifier.padding(top = 8.dp)
+                            text = "Welcome Back!",
+                            fontSize = 32.sp,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(bottom = 8.dp)
                         )
-                    }
-                    Text(
-                        text = "Don't have an account? Sign Up!",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 16.dp, top = 16.dp)
-                            .clickable{
-                                navHostController.navigate("signUpScreen")
+
+                        Text(
+                            text = "Please login with your information",
+                            fontSize = 16.sp,
+                            modifier = Modifier.padding(bottom = 16.dp)
+                        )
+
+                        Text(
+                            text = "Email Address",
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(bottom = 8.dp)
+                        )
+                        OutlinedTextField(
+                            value = email,
+                            onValueChange = { email = it },
+                            label = { Text("Enter your email address") },
+                            leadingIcon = {
+                                Image(
+                                    painter = painterResource(id = R.drawable.mail),
+                                    modifier = Modifier.size(24.dp),
+                                    contentDescription = "Email Icon"
+                                )
                             },
-                        color = colorResource(id = R.color.purple_500),
-                        fontWeight = FontWeight.Bold
-                    )
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 16.dp)
+                        )
+
+                        Text(
+                            text = "Password",
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(bottom = 8.dp)
+                        )
+                        OutlinedTextField(
+                            value = password,
+                            label = { Text("Enter your password") },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 16.dp),
+                            visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                            onValueChange = { password = it },
+                            leadingIcon = {
+                                Image(
+                                    painter = painterResource(id = R.drawable.password),
+                                    modifier = Modifier.size(24.dp),
+                                    contentDescription = "Password Icon"
+                                )
+                            },
+                            trailingIcon = {
+                                val icon =
+                                    if (isPasswordVisible) R.drawable.baseline_visibility_on else R.drawable.baseline_visibility_off
+                                IconButton(
+                                    onClick = { isPasswordVisible = !isPasswordVisible }
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = icon),
+                                        contentDescription = "Visibility Icon"
+                                    )
+                                }
+                            },
+                        )
+
+                        Button(
+                            onClick = { viewModel.signIn(email, password) },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(50.dp)
+                                .padding(top = 8.dp),
+                            shape = RoundedCornerShape(25.dp)
+                        ) {
+                            Text(text = "Login", fontSize = 16.sp)
+                        }
+                        errorMessage?.let { error ->
+                            Text(
+                                text = error,
+                                color = Color.Red,
+                                modifier = Modifier.padding(top = 8.dp)
+                            )
+                        }
+
+                        GoogleSignInButton(navHostController = navHostController)
+
+                        Text(
+                            text = "Don't have an account? Sign Up!",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 16.dp, top = 16.dp)
+                                .clickable {
+                                    navHostController.navigate("signUpScreen")
+                                },
+                            color = colorResource(id = R.color.purple_500),
+                            fontWeight = FontWeight.Bold
+                        )
 
 
-                    GoogleSignInButton(navHostController = navHostController)
+                    }
                 }
             }
         }
