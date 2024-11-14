@@ -58,6 +58,9 @@ dependencies {
     implementation(libs.firebase.bom)
     implementation(libs.firebase.auth)
     implementation(libs.play.services.auth)
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.firestore.ktx)
+
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.googleid)
@@ -74,7 +77,9 @@ dependencies {
     implementation (libs.hilt.android)
     kapt(libs.hilt.android.compiler)
     kapt (libs.androidx.hilt.compiler)
-
+    implementation (libs.androidx.hilt.navigation.compose)
+    implementation(libs.hilt.android.v242)
+    kapt (libs.hilt.android.compiler.v242)
 
     //Room
     implementation (libs.androidx.room.runtime)
