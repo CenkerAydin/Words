@@ -9,5 +9,6 @@ data class Word(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val englishWord: String,
     val turkishWord: String,
-    var isLearned: Boolean = false
+    var isLearned: Boolean = false,
+    val userId: String
 )
