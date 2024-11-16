@@ -7,9 +7,9 @@ import javax.inject.Inject
 
 class WordRepository @Inject constructor(private val wordDao: WordDao) {
 
-    fun getAllWords(): Flow<List<Word>> = wordDao.getAllWords()
+    fun getAllWords(userId: String): Flow<List<Word>> = wordDao.getAllWords(userId)
 
-    fun getLearnedWords(): Flow<List<Word>> = wordDao.getLearnedWords()
+    fun getLearnedWords(userId: String): Flow<List<Word>> = wordDao.getLearnedWords(userId)
 
     suspend fun updateWord(word: Word) {
         wordDao.updateWord(word)
@@ -19,14 +19,16 @@ class WordRepository @Inject constructor(private val wordDao: WordDao) {
         wordDao.insertWords(words)
     }
 
-    suspend fun deleteAllWords() {
-        wordDao.deleteAllWords() // Tüm kelimeleri sil
+    suspend fun deleteAllWords(userId: String) {
+        wordDao.deleteAllWords(userId)
     }
 
     suspend fun deleteWord(word: Word) {
         wordDao.deleteWord(word)
     }
-    suspend fun getWordByEnglish(englishWord: String): Word? {
-        return wordDao.getWordByEnglish(englishWord)
+
+    suspend fun getWordByEnglish(englishWord: String, userId: String): Word? {
+        return wordDao.getWordByEnglish(englishWord, userId)
     }
 }
+
