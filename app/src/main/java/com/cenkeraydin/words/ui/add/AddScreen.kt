@@ -23,12 +23,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.cenkeraydin.words.WordViewModel
 import com.cenkeraydin.words.data.model.Word
 import com.cenkeraydin.words.ui.anim.LottieAnimationView
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun AddScreen(viewModel: WordViewModel = hiltViewModel()) {
     var englishWord by remember { mutableStateOf("") }
     var turkishWord by remember { mutableStateOf("") }
     var showConfirmation by remember { mutableStateOf(false) }
+    val userId: String? = FirebaseAuth.getInstance().currentUser?.uid
 
     Column(
         modifier = Modifier
@@ -60,8 +62,8 @@ fun AddScreen(viewModel: WordViewModel = hiltViewModel()) {
 
         Button(
             onClick = {
-                if (englishWord.isNotEmpty() && turkishWord.isNotEmpty()) {
-                    viewModel.addWord(Word(0,englishWord, turkishWord))
+                if (userId != null && englishWord.isNotEmpty() && turkishWord.isNotEmpty()) {
+                    viewModel.addWord(Word(0, englishWord, turkishWord, false, userId))
                     showConfirmation = true
                     englishWord = ""
                     turkishWord = ""

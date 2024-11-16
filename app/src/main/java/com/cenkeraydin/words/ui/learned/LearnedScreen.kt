@@ -77,10 +77,16 @@ fun LearnedScreen(viewModel: WordViewModel = hiltViewModel()) {
                 )
             ) {
                 items(learnedList) { word: Word ->
-                    WordItem(word = word) {
-                        selectedLearnedWord = word
-                        showDialog = true
-                    }
+                    WordItem(
+                        word = word,
+                        onClick = {
+                            selectedLearnedWord = word
+                            showDialog = true
+                        },
+                        onDeleteClick = {
+                            viewModel.deleteWord(word) // Call a function in your ViewModel to delete the word
+                        }
+                    )
                 }
             }
         }

@@ -2,6 +2,7 @@ package com.cenkeraydin.words.ui.home
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -13,9 +14,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,40 +36,61 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.cenkeraydin.words.WordViewModel
 import com.cenkeraydin.words.data.model.Word
+import com.cenkeraydin.words.ui.login.signup.SignUpViewModel
 
 @Composable
-fun WordListScreen(navHostController: NavHostController, viewModel: WordViewModel) {
+fun WordListScreen(
+    navHostController: NavHostController,
+    viewModel: WordViewModel = hiltViewModel(),
+    signUpViewModel: SignUpViewModel = hiltViewModel()
+) {
 
     val wordList by viewModel.words.observeAsState(initial = emptyList())
     var selectedWord by remember { mutableStateOf<Word?>(null) }
     var showDialog by remember { mutableStateOf(false) }
     var searchQuery by remember { mutableStateOf("") }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(4.dp)
     ) {
-        Text(
-            text = "Words",
-            fontWeight = FontWeight.Bold,
-            fontSize = 24.sp,
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            style = TextStyle(
-                brush = Brush.linearGradient(
-                    colors = listOf(Color.Red, Color.Blue)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = "Words",
+                fontWeight = FontWeight.Bold,
+                fontSize = 24.sp,
+                style = TextStyle(
+                    brush = Brush.linearGradient(
+                        colors = listOf(Color.Red, Color.Blue)
+                    )
                 )
-            ),
+            )
+            IconButton(onClick = {
+                signUpViewModel.signOut()
+                navHostController.navigate("signInScreen") {
+                    popUpTo("home") { inclusive = true }
+                }
+            }) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ExitToApp,
+                    contentDescription = "Sign Out",
+                    tint = Color.Black
+                )
+            }
+        }
 
-        )
         // Search bar
         OutlinedTextField(
             value = searchQuery,
@@ -82,7 +109,17 @@ fun WordListScreen(navHostController: NavHostController, viewModel: WordViewMode
         Spacer(modifier = Modifier.height(8.dp))
 
         if (filteredWordList.isEmpty()) {
-            Text(text = "No words available", modifier = Modifier.align(Alignment.CenterHorizontally))
+            Box(
+                modifier = Modifier
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "No words available",
+                    fontWeight = FontWeight.Bold,
+
+                    )
+            }
         } else {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
@@ -90,13 +127,20 @@ fun WordListScreen(navHostController: NavHostController, viewModel: WordViewMode
                     start = 16.dp,
                     top = 8.dp,
                     end = 16.dp,
-                    bottom = 72.dp)
+                    bottom = 72.dp
+                )
             ) {
                 items(filteredWordList) { word: Word ->
-                    WordItem(word = word) {
-                        selectedWord = word
-                        showDialog = true
-                    }
+                    WordItem(
+                        word = word,
+                        onClick = {
+                            selectedWord = word
+                            showDialog = true
+                        },
+                        onDeleteClick = {
+                            viewModel.deleteWord(word) // Call a function in your ViewModel to delete the word
+                        }
+                    )
                 }
             }
         }
@@ -124,32 +168,37 @@ fun WordListScreen(navHostController: NavHostController, viewModel: WordViewMode
 }
 
 @Composable
-fun WordItem(word: Word, onClick: () -> Unit) {
+fun WordItem(word: Word, onClick: () -> Unit, onDeleteClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
             .clickable { onClick() },
-        shape = RoundedCornerShape(8.dp) // Kenar yuvarlama
+        shape = RoundedCornerShape(8.dp)
     ) {
         Row(
             modifier = Modifier
                 .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(text = word.englishWord, fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.weight(1f))
+            IconButton(
+                onClick = onDeleteClick,
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = "Delete",
+                    tint = Color.Red
+                )
+            }
             Text(text = word.turkishWord, fontWeight = FontWeight.Bold)
+
         }
     }
 }
 
-@Preview
-@Composable
-fun WordListScreenPreview() {
-    val viewModel: WordViewModel = viewModel()
-    var navHostController = rememberNavController()
-    WordListScreen(navHostController, viewModel)
-}
+
 
 
