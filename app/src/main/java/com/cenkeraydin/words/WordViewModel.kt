@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import androidx.lifecycle.asLiveData
 import com.cenkeraydin.words.data.model.WordList
+import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -23,8 +24,10 @@ class WordViewModel @Inject constructor(
     @ApplicationContext private val context: Context
 ) : ViewModel() {
 
-    val words: LiveData<List<Word>> = repository.getAllWords().asLiveData()
-    val learnedWords: LiveData<List<Word>> = repository.getLearnedWords().asLiveData()
+    private val userId: String? = FirebaseAuth.getInstance().currentUser?.uid
+
+    val words: LiveData<List<Word>> = userId?.let { repository.getAllWords(it).asLiveData() } ?: MutableLiveData()
+    val learnedWords: LiveData<List<Word>> = userId?.let { repository.getLearnedWords(it).asLiveData() } ?: MutableLiveData()
 
     fun markAsLearned(word: Word) {
         viewModelScope.launch {
@@ -61,24 +64,28 @@ class WordViewModel @Inject constructor(
 
 
     private suspend fun clearWordsAndReload() {
-        repository.deleteAllWords()
+        userId?.let { uid ->
+            repository.deleteAllWords(uid)
 
-        val jsonString = loadWordsFromJson()
-        val wordList = parseWordsFromJson(jsonString)
+            val jsonString = loadWordsFromJson()
+            val wordList = parseWordsFromJson(jsonString)
 
-        for (word in wordList) {
-            val existingWord = repository.getWordByEnglish(word.englishWord)
-            if (existingWord == null) {
-                repository.insertWords(listOf(word))
+            for (word in wordList) {
+                val existingWord = repository.getWordByEnglish(word.englishWord, uid)
+                if (existingWord == null) {
+                    repository.insertWords(listOf(word))
+                }
             }
         }
     }
 
     fun addWord(word: Word) {
         viewModelScope.launch {
-            val existingWord = repository.getWordByEnglish(word.englishWord)
-            if (existingWord == null) {
-                repository.insertWords(listOf(word))
+            userId?.let { uid ->
+                val existingWord = repository.getWordByEnglish(word.englishWord, uid)
+                if (existingWord == null) {
+                    repository.insertWords(listOf(word.copy(userId = uid)))
+                }
             }
         }
     }
