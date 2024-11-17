@@ -11,9 +11,7 @@ import com.cenkeraydin.words.ui.learned.LearnedScreen
 import com.cenkeraydin.words.ui.profile.ProfileScreen
 import com.cenkeraydin.words.ui.home.WordListScreen
 import com.cenkeraydin.words.ui.login.signin.SignInScreen
-import com.cenkeraydin.words.ui.login.signin.SignInViewModel
 import com.cenkeraydin.words.ui.login.signup.SignUpScreen
-import com.cenkeraydin.words.ui.login.signup.SignUpViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -24,7 +22,7 @@ fun Navigation(navController : NavHostController) {
 
     NavHost(
         navController = navController,
-        startDestination = if(isUserLoggedIn) "home" else "signUpScreen"  ) {
+        startDestination = if(isUserLoggedIn) "home" else "signInScreen"  ) {
         composable(BottomNavItem.Home.route) {
             WordListScreen(navController)
         }
