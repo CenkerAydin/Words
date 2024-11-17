@@ -19,7 +19,6 @@ fun BottomNavigationBar(navController: NavController) {
         BottomNavItem.Home,
         BottomNavItem.Learned,
         BottomNavItem.Add,
-        BottomNavItem.Profile,
     )
 
     BottomNavigation(

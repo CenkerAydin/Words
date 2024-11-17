@@ -1,11 +1,9 @@
 package com.cenkeraydin.words.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.cenkeraydin.words.WordViewModel
 import com.cenkeraydin.words.ui.add.AddScreen
 import com.cenkeraydin.words.ui.learned.LearnedScreen
 import com.cenkeraydin.words.ui.profile.ProfileScreen
@@ -31,9 +29,6 @@ fun Navigation(navController : NavHostController) {
         }
         composable(BottomNavItem.Add.route) {
            AddScreen()
-        }
-        composable(BottomNavItem.Profile.route) {
-            ProfileScreen()
         }
         composable("signInScreen") {
             SignInScreen(navController,)
