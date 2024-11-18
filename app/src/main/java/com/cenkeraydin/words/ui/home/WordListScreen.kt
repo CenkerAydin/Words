@@ -20,8 +20,10 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardElevation
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,6 +45,7 @@ import androidx.navigation.NavHostController
 import com.cenkeraydin.words.WordViewModel
 import com.cenkeraydin.words.data.model.Word
 import com.cenkeraydin.words.ui.login.signup.SignUpViewModel
+import com.cenkeraydin.words.util.GradientText
 
 @Composable
 fun WordListScreen(
@@ -67,16 +70,7 @@ fun WordListScreen(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(
-                text = "Words",
-                fontWeight = FontWeight.Bold,
-                fontSize = 24.sp,
-                style = TextStyle(
-                    brush = Brush.linearGradient(
-                        colors = listOf(Color.Red, Color.Blue)
-                    )
-                )
-            )
+            GradientText("Words")
             IconButton(onClick = {
                 signUpViewModel.signOut()
                 navHostController.navigate("signInScreen") {
@@ -86,12 +80,11 @@ fun WordListScreen(
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ExitToApp,
                     contentDescription = "Sign Out",
-                    tint = Color.Black
+                    tint = MaterialTheme.colorScheme.onBackground
                 )
             }
         }
 
-        // Search bar
         OutlinedTextField(
             value = searchQuery,
             onValueChange = { searchQuery = it },
@@ -174,30 +167,44 @@ fun WordItem(word: Word, onClick: () -> Unit, onDeleteClick: () -> Unit) {
             .fillMaxWidth()
             .padding(vertical = 8.dp)
             .clickable { onClick() },
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(8.dp),
     ) {
         Row(
             modifier = Modifier
+                .fillMaxWidth()
                 .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = word.englishWord, fontWeight = FontWeight.Bold)
-            Spacer(modifier = Modifier.weight(1f))
-            IconButton(
-                onClick = onDeleteClick,
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = "Delete",
-                    tint = Color.Red
-                )
-            }
-            Text(text = word.turkishWord, fontWeight = FontWeight.Bold)
+            Text(
+                text = word.englishWord,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.weight(1f)
+            )
 
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End,
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = word.turkishWord,
+                    fontWeight = FontWeight.Bold
+                )
+                IconButton(
+                    onClick = onDeleteClick,
+                    modifier = Modifier.padding(start = 8.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = "Delete",
+                        tint = Color.Red
+                    )
+                }
+            }
         }
     }
 }
+
 
 
 

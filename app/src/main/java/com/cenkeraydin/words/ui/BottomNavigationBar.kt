@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,8 +24,8 @@ fun BottomNavigationBar(navController: NavController) {
 
     BottomNavigation(
         modifier = Modifier.height(70.dp),
-        backgroundColor = Color.White,
-        contentColor = Color.Black
+        backgroundColor = MaterialTheme.colorScheme.surface,
+        contentColor = MaterialTheme.colorScheme.onSurface
     ) {
         val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 

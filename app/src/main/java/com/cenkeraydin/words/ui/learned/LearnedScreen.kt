@@ -1,9 +1,12 @@
 package com.cenkeraydin.words.ui.learned
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -18,16 +21,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.cenkeraydin.words.WordViewModel
 import com.cenkeraydin.words.data.model.Word
 import com.cenkeraydin.words.ui.home.WordItem
+import com.cenkeraydin.words.util.GradientText
 
 @Composable
 fun LearnedScreen(viewModel: WordViewModel = hiltViewModel()) {
@@ -41,19 +41,15 @@ fun LearnedScreen(viewModel: WordViewModel = hiltViewModel()) {
             .fillMaxSize()
             .padding(4.dp)
     ) {
-        Text(
-            text = "Learned Words",
-            fontWeight = FontWeight.Bold,
-            fontSize = 24.sp,
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            style = TextStyle(
-                brush = Brush.linearGradient(
-                    colors = listOf(Color.Red, Color.Blue)
-                )
-            ),
-
-            )
-
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            GradientText("Learned Words")
+        }
         if (learnedList.isEmpty()) {
             Box(
                 modifier = Modifier
