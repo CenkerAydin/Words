@@ -14,7 +14,7 @@ android {
     defaultConfig {
         applicationId = "com.cenkeraydin.words"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -29,6 +29,9 @@ android {
                 "proguard-rules.pro"
             )
         }
+    }
+    composeOptions{
+        kotlinCompilerExtensionVersion = "1.5.9"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -57,6 +60,7 @@ dependencies {
     //Firebase
     implementation(libs.firebase.bom)
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.auth.ktx)
     implementation(libs.play.services.auth)
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.firestore.ktx)
@@ -96,6 +100,8 @@ dependencies {
 
     //Lottie
     implementation (libs.lottie.compose)
+
+    implementation (libs.androidx.lifecycle.runtime.ktx.v261)
 
 
 
