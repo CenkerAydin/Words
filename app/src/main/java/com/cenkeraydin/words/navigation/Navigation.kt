@@ -6,7 +6,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.cenkeraydin.words.ui.add.AddScreen
 import com.cenkeraydin.words.ui.learned.LearnedScreen
-import com.cenkeraydin.words.ui.profile.ProfileScreen
 import com.cenkeraydin.words.ui.home.WordListScreen
 import com.cenkeraydin.words.ui.login.signin.SignInScreen
 import com.cenkeraydin.words.ui.login.signup.SignUpScreen
@@ -31,7 +30,7 @@ fun Navigation(navController : NavHostController) {
            AddScreen()
         }
         composable("signInScreen") {
-            SignInScreen(navController,)
+            SignInScreen(navController)
         }
         composable("signUpScreen") {
             SignUpScreen(navController )
