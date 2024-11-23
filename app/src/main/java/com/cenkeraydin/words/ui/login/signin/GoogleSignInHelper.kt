@@ -1,61 +1,52 @@
 package com.cenkeraydin.words.ui.login.signin
 
-import com.cenkeraydin.words.R
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import android.content.Context
-import android.content.Intent
-import android.util.Log
-import androidx.activity.result.ActivityResultLauncher
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.Task
+import com.cenkeraydin.words.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import kotlinx.coroutines.tasks.await
+import kotlin.coroutines.cancellation.CancellationException
+import android.content.Intent
+import androidx.activity.result.ActivityResultLauncher
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 
-class GoogleSignInHelper(private val context: Context) {
 
-    // FirebaseAuth instance
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+class GoogleSignInHelper(context: Context) {
 
-    // Configure Google Sign-In and the GoogleSignInClient
-    private val googleSignInClient: GoogleSignInClient by lazy {
+    private val tag = "GoogleSignInHelper"
+    private val firebaseAuth = FirebaseAuth.getInstance()
+    private val googleSignInClient: GoogleSignInClient
+
+    init {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(context.getString(R.string.web_client_id)) // Firebase Console'dan alınan istemci kimliğini buraya koy
+            .requestIdToken(context.getString(R.string.web_client_id))
             .requestEmail()
             .build()
-        GoogleSignIn.getClient(context, gso)
+        googleSignInClient = GoogleSignIn.getClient(context, gso)
     }
 
-    // Sign-in intenti başlatır
-    fun signIn(launcher: ActivityResultLauncher<Intent>) {
+    fun signIn(signInLauncher: ActivityResultLauncher<Intent>) {
         val signInIntent = googleSignInClient.signInIntent
-        launcher.launch(signInIntent)
+        signInLauncher.launch(signInIntent)
     }
-
-    fun handleSignInResult(task: Task<GoogleSignInAccount>, onComplete: (Boolean, String?) -> Unit) {
-        try {
-            val account = task.getResult(ApiException::class.java)
-            Log.d("GoogleSignInHelper", "Google Sign-In successful with account: ${account?.email}")
-            firebaseAuthWithGoogle(account?.idToken, onComplete)
-        } catch (e: ApiException) {
-            Log.e("GoogleSignInHelper", "Google Sign-In failed", e)
-            onComplete(false, "Google Sign-In failed: ${e.message}")
+    suspend fun handleSignInResult(account: GoogleSignInAccount?): Boolean {
+        return try {
+            val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
+            val authResult = firebaseAuth.signInWithCredential(credential).await()
+            authResult.user != null
+        } catch (e: Exception) {
+            e.printStackTrace()
+            if (e is CancellationException) throw e
+            println(tag + "handleSignInResult error: " + e.message)
+            false
         }
     }
 
-    private fun firebaseAuthWithGoogle(idToken: String?, onComplete: (Boolean, String?) -> Unit) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d("GoogleSignInHelper", "Firebase Authentication successful.")
-                    onComplete(true, null)
-                } else {
-                    Log.e("GoogleSignInHelper", "Firebase Authentication failed", task.exception)
-                    onComplete(false, "Firebase Authentication failed: ${task.exception?.message}")
-                }
-            }
+    fun signOut() {
+        firebaseAuth.signOut()
+        googleSignInClient.signOut()
     }
 }

@@ -20,7 +20,6 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardElevation
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -34,16 +33,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.cenkeraydin.words.WordViewModel
 import com.cenkeraydin.words.data.model.Word
+import com.cenkeraydin.words.ui.login.signin.GoogleSignInHelper
 import com.cenkeraydin.words.ui.login.signup.SignUpViewModel
 import com.cenkeraydin.words.util.GradientText
 
@@ -58,6 +56,8 @@ fun WordListScreen(
     var selectedWord by remember { mutableStateOf<Word?>(null) }
     var showDialog by remember { mutableStateOf(false) }
     var searchQuery by remember { mutableStateOf("") }
+    val context= LocalContext.current
+    val googleSignInHelper = remember { GoogleSignInHelper(context) }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -72,6 +72,7 @@ fun WordListScreen(
         ) {
             GradientText("Words")
             IconButton(onClick = {
+                googleSignInHelper.signOut()
                 signUpViewModel.signOut()
                 navHostController.navigate("signInScreen") {
                     popUpTo("home") { inclusive = true }
@@ -131,7 +132,7 @@ fun WordListScreen(
                             showDialog = true
                         },
                         onDeleteClick = {
-                            viewModel.deleteWord(word) // Call a function in your ViewModel to delete the word
+                            viewModel.deleteWord(word)
                         }
                     )
                 }
@@ -144,7 +145,7 @@ fun WordListScreen(
                 text = { Text(text = "Do you want to add \"${selectedWord?.englishWord}\" to learned words?") },
                 confirmButton = {
                     Button(onClick = {
-                        viewModel.markAsLearned(selectedWord!!) // Kelimeyi learned listesine ekle
+                        viewModel.markAsLearned(selectedWord!!)
                         showDialog = false
                     }) {
                         Text("Yes")
